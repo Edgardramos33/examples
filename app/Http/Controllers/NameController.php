@@ -13,18 +13,51 @@ class NameController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
         ]);
-        Name::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-        ]);
 
-        return redirect()->route('name')->with('success', 'Name added successfully!');
+        try {
+            Name::create($request->only(['first_name', 'last_name']));
+            return redirect()->route('name')->with('success', 'Name added successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('name')->with('error', 'Failed to add name. Please try again.');
+        }
     }
 
     public function index()
     {
-        $names = Name::all();
-
+        $names = Name::latest()->get(); // Fetch the latest names first
         return view('name', compact('names'));
+    }
+
+    public function edit($id)
+    {
+        $name = Name::findOrFail($id);
+        return view('edit', compact('name'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+        ]);
+
+        try {
+            $name = Name::findOrFail($id);
+            $name->update($request->only(['first_name', 'last_name']));
+            return redirect()->route('name')->with('success', 'Name updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('name')->with('error', 'Failed to update name. Please try again.');
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $name = Name::findOrFail($id);
+            $name->delete();
+            return redirect()->route('name')->with('success', 'Name deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('name')->with('error', 'Failed to delete name. Please try again.');
+        }
     }
 }

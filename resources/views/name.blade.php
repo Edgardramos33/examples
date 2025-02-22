@@ -9,12 +9,17 @@
         <p style="color: green;">{{ session('success') }}</p>
     @endif
 
+    @if(session('error'))
+        <p style="color: red;">{{ session('error') }}</p>
+    @endif
+
     <table border="1">
         <thead>
             <tr>
                 <th>#</th>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +28,11 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $name->first_name }}</td>
                     <td>{{ $name->last_name }}</td>
+                    <td>
+                        <a href="{{ route('edit.name', $name->id) }}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

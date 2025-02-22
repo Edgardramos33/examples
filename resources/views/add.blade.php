@@ -1,11 +1,11 @@
 @extends('layouts.index')
 
-@section('title','Adding list of names')
+@section('title','Adding List of Names')
 
 @section('content')
-<h2>Add names</h2>
+    <h2>Add Names</h2>
 
-<form action="{{ route('store.name') }}" method="POST">
+    <form action="{{ route('store.name') }}" method="POST">
         @csrf
         <div>
             <label for="first_name">First Name:</label>
@@ -17,5 +17,4 @@
         </div>
         <button type="submit">Submit</button>
     </form>
-
 @endsection
