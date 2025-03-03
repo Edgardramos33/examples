@@ -3,6 +3,9 @@
 @section('title, Homepage')
 
 @section('content')
+<header>
+    @include('partials.navbar')
+</header>
     <div class="container">
         <h2>This is the homepage</h2>
         <p>Hello this is the homepage</p>

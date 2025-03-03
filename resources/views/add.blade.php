@@ -5,6 +5,8 @@
 @section('content')
     <h2>Add Names</h2>
 
+    <x-alert />
+
     <form action="{{ route('store.name') }}" method="POST">
         @csrf
         <div>

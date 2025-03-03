@@ -13,7 +13,11 @@ class NameController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
         ]);
-
+    
+        Name::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+        ]);
         try {
             Name::create($request->only(['first_name', 'last_name']));
             return redirect()->route('name')->with('success', 'Name added successfully!');
@@ -24,7 +28,7 @@ class NameController extends Controller
 
     public function index()
     {
-        $names = Name::latest()->get(); // Fetch the latest names first
+        $names = Name::latest()->get(); 
         return view('name', compact('names'));
     }
 
@@ -40,7 +44,13 @@ class NameController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
         ]);
-
+    
+        $name = Name::findOrFail($id);
+        $name->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+        ]);
+    
         try {
             $name = Name::findOrFail($id);
             $name->update($request->only(['first_name', 'last_name']));
@@ -49,7 +59,7 @@ class NameController extends Controller
             return redirect()->route('name')->with('error', 'Failed to update name. Please try again.');
         }
     }
-
+    
     public function destroy($id)
     {
         try {
